@@ -6,6 +6,7 @@ This Flask-based server acts as an AI Dungeon Master (DM) to guide users through
 
 1. **Installation**:
    - Clone this repository to your local machine.
+   - Set up cookies and your env containing secrets from HuggingFace (you can look up the steps on HuggingChat API repository)
 
 2. **Environment Variables**:
    - Set the following environment variables:
