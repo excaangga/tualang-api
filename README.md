@@ -1,7 +1,3 @@
-Certainly! Below is a `readme.md` file based on the provided code snippet:
-
----
-
 # AI Dungeon Master (DM) Server
 
 This Flask-based server acts as an AI Dungeon Master (DM) to guide users through their role-playing game (RPG) adventures. I use huggingchat API to access the LLM. As for the DM, it provides information about characters, settings, and encounters. Here's how it works:
