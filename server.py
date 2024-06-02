@@ -4,6 +4,7 @@ from hugchat.login import Login
 import os
 import config
 import json
+from threading import Lock
 
 app = Flask(__name__)
 
@@ -14,6 +15,11 @@ cookies = sign.login(cookie_dir_path = "./cookies/", save_cookies = True)
 
 chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
 chat_dict = dict()
+
+# Temporary storage for player actions and names per chat_id
+chat_player_actions = {}
+chat_player_names = {}
+chat_locks = {}
 
 @app.route('/', methods = ['GET'])
 def root():
@@ -43,8 +49,32 @@ def chat(chat_id):
     if (request.method == 'POST'):
         data = request.json
         chatbot.change_conversation(chat_dict[chat_id])
-        res = chatbot.chat(data['message'])
-        return jsonify({'response': res.text})
+        
+        player_id = data['player_id']
+        action = data['action']
+        name = data['name']
+
+        if chat_id not in chat_player_actions:
+            chat_player_actions[chat_id] = {}
+            chat_player_names[chat_id] = {}
+            chat_locks[chat_id] = Lock()
+
+        with chat_locks[chat_id]:
+            chat_player_actions[chat_id][player_id] = action
+            chat_player_names[chat_id][player_id] = name
+
+            if len(chat_player_actions[chat_id]) == 4:
+                # All 4 players have submitted their actions
+                collective = ", ".join([f"player {chat_player_names[chat_id][player_id]}: {chat_player_actions[chat_id][player_id]}" for player_id in chat_player_actions[chat_id]])
+                # Clear actions for the next round
+                chat_player_actions[chat_id].clear()
+                chat_player_names[chat_id].clear()
+
+                res = chatbot.chat(collective)
+                return jsonify({'message': collective, 'response': res.text})
+            else:
+                return jsonify({'response': 'Waiting for other players'})
+        
     elif (request.method == 'DELETE'):
         chatbot.delete_conversation(chat_dict[chat_id])
         res = 'Conversation deleted successfully.'
