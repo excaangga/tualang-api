@@ -41,9 +41,3 @@ This Flask-based server acts as an AI Dungeon Master (DM) to guide users through
 2. Initiate a conversation by accessing `/initiate`.
 3. Choose a conversation from the list using `/list`.
 4. Interact with the AI Dungeon Master by sending messages to `/chat/<chat_id>`.
-
-Remember to customize the logic, add error handling, and enhance the features according to your specific RPG scenario!
-
----
-
-Feel free to modify and expand upon this `readme.md` to suit your needs. If you have any further questions or need assistance, feel free to ask! 🚀
