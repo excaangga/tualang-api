@@ -40,4 +40,4 @@ This Flask-based server acts as an AI Dungeon Master (DM) to guide users through
 1. Start the server.
 2. Initiate a conversation by accessing `/initiate`.
 3. Choose a conversation from the list using `/list`.
-4. Interact with the AI Dungeon Master by sending messages to `/chat/<chat_id>`.
+4. Interact with the AI Dungeon Master by sending messages to `/chat/<chat_id>`. This endpoint supports both POST and DELETE method.
